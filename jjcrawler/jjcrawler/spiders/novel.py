@@ -20,7 +20,7 @@ from .config import format
 class NovelSpider(scrapy.Spider):
     name = "novel"
 
-    def __init__(self, id=None, yes=False, *args, **kwargs):
+    def __init__(self, id=None, yes="True", *args, **kwargs):
         set_log_level()
         super(NovelSpider, self).__init__(*args, **kwargs)
 

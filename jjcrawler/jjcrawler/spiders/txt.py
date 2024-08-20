@@ -14,7 +14,7 @@ def create_desc_txt(directory: Path, novel):
     tags = "内容标签： " + " ".join(novel["tag_list"])
     description_txt.write(tags + "\n")
 
-    description_txt.write(novel["keywords"] + "\n")
+    # description_txt.write(novel["keywords"] + "\n")
 
     description_txt.write(novel["oneliner"] + "\n")
 
