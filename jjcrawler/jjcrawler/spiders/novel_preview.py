@@ -64,13 +64,16 @@ def get_novel_item(id, response):
     if re.findall("小树苗", page_title) != []:
         return get_children_novel_item(id, novel["title"], response), True
     smallreadbody = response.css("div.smallreadbody span::text")
-    if smallreadbody == []:
+    try:
+        novel["tags"] = get_tags(response)
+    except Exception as e:
         novel["tags"] = None
+        novel["error"] = "文案内容需作者填写身份信息后方能展示。"
+    try:
+        novel["oneliner"] = smallreadbody[-2].get().split("：")[1]
+    except Exception as e:
         novel["oneliner"] = None
         novel["error"] = "文案内容需作者填写身份信息后方能展示。"
-    else:
-        novel["tags"] = get_tags(response)
-        novel["oneliner"] = smallreadbody[-2].get().split("：")[1]
     novel["author"] = get_author(response)
     novel["genre"] = response.css("li span::text")[1].get().strip()
     novel["word_count"] = get_word_count(response)
