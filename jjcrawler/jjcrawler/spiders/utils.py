@@ -45,11 +45,14 @@ def download_cover(directory: Path, novel):
     url = novel["cover_url"]
     if url:
         cover_path = get_cover_path(directory, novel["title"])
-        response = requests.get(url)
-        if response.status_code == 200:
-            with open(cover_path, "wb") as file:
-                for chunk in response:
-                    file.write(chunk)
+        try:
+            response = requests.get(url, timeout=30)
+            if response.status_code == 200:
+                with open(cover_path, "wb") as file:
+                    for chunk in response:
+                        file.write(chunk)
+        except Exception as e:
+            print(f"[bold red]Cover download failed: {e}[/]")
 
 
 def get_chapter_id(url: str) -> str:
