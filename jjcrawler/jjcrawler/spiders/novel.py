@@ -17,6 +17,7 @@ from .utils import (
 from .novel_preview import novel_preview
 from .doc import create_desc_doc, create_chapter_doc
 from .txt import create_desc_txt, create_chapter_txt
+from .font_decrypt import decrypt_jjwxc_list
 from rich.panel import Panel
 from rich import print
 import re
@@ -239,6 +240,11 @@ class NovelSpider(scrapy.Spider):
              print(f"[yellow]Warning: Empty body for chapter {chapter['title']} (ID: {chapter['id']}). Possible VIP restriction or parsing error.[/]")
              # Debug: Print a snippet of the page to see what's happening
              # print(response.text[:500])
+
+        # 使用对照表解码字体混淆的内容
+        if chapter.get("body"):
+            chapter["body"] = decrypt_jjwxc_list(chapter["body"])
+            print(f"[green]Decrypted chapter content using font mapping table[/]")
 
         chapter["author_said"] = process_desc(response.css("div.readsmall"))
         if format == "docx":
